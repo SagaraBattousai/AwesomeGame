@@ -1,5 +1,8 @@
 class AwesomePawn extends UTPawn;
 
+var bool bInvulnerable;
+var float InvulnerableTime;
+
 simulated function PostBeginPlay()
 {
     super.PostBeginPlay();
@@ -18,6 +21,23 @@ simulated function SetMeshVisibility(bool bVisable)
     Mesh.SetOwnerNoSee(false);
 }
 
+event Bump(Actor Other, PrimitiveComponent OtherComp, vector HitNormal)
+{
+    `log("Bump!");
+    if(TestEnemy(Other) != none && !bInvulnerable)
+    {
+        bInvulnerable=true;
+        SetTimer(InvulnerableTime, false, 'EndInvulnerable');
+        TakeDamage(TestEnemy(Other).BumpDamage, none, Location, vect(0,0,0), class'UTDmgType_LinkPlasma');
+    }
+}
+
+function EndInvulnerable()
+{
+    bInvulnerable = false;
+}
+
 defaultproperties
 {
+    InvulnerableTime=0.6
 }

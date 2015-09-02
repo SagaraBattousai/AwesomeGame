@@ -1,6 +1,42 @@
 class TestEnemy extends AwesomeActor
     placeable;
     
+var float BumpDamage;
+var Pawn Enemy;
+var float FollowDistance;
+var float AttackDistance;
+
+function Tick(float DeltaTime)
+{
+    local AwesomePlayerController PC;
+    local vector NewLocation;
+
+    if(Enemy == none)
+    {
+        foreach LocalPlayerControllers(class'AwesomePlayerController', PC)
+        {
+            if(PC.Pawn != none)
+            {
+                Enemy = PC.Pawn;
+                `log("My Enemy is:" @ Enemy);
+            }
+        }
+    }
+    else if(VSize(Location - Enemy.Location) < FollowDistance)
+    {
+        if(Vsize(Location - Enemy.Location) < AttackDistance)
+        {
+            Enemy.Bump(self, CollisionComponent, vect(0,0,0));
+        }
+        else
+        {
+            NewLocation = location;
+            newLocation += (Enemy.Location - Location) * DeltaTime;
+            SetLocation(NewLocation);
+        }
+    }
+}
+
 event TakeDamage(int DamageAmount, Controller EventInstigator,
                  vector HitLocation, vector momentum, class<DamageType> DamageType,
                  optional TraceHitInfo HitInfo, optional Actor DamageCauser)
@@ -14,6 +50,11 @@ event TakeDamage(int DamageAmount, Controller EventInstigator,
 
 defaultproperties
 {
+
+    BumpDamage=5.0
+    FollowDistance=512.0
+    AttackDistance=96.0
+
     bBlockActors=True
     bCollideActors=True
     

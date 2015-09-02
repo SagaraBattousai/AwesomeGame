@@ -81,12 +81,20 @@ state PlayerWalking
         local vector X, Y, Z, AltAccel;
 
         GetAxes(CurrentCameraRotation, X, Y, Z);
-        AltAccel = PlayerInput.aFoward * Z + PlayerInput.aStrafe * Y;
+        AltAccel = PlayerInput.aForward * Z + PlayerInput.aStrafe * Y;
         AltAccel.Z = 0;
         AltAccel = Pawn.AccelRate * Normal(AltAccel);
 
         super.ProcessMove(DeltaTime, AltAccel, DoubleClickMove, DeltaRot);
     }
+}
+
+reliable client function ClientSetHUD(class<HUD> newHUDType)
+{
+    if(myHUD != none)
+        myHUD.DEstroy();
+        
+    myHUD = spawn(class'AwesomeHUD', self);
 }
 
 defaultproperties

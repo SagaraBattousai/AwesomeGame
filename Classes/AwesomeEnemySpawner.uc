@@ -1,9 +1,30 @@
 class AwesomeEnemySpawner extends AwesomeActor
     placeable;
-    
+
+var TestEnemy MySpawnedEnemy;
+
 function SpawnEnemy()
 {
-    `log("SpawnEnemy Called==================================");
+    if(MySpawnedEnemy == none)
+        MySpawnedEnemy = spawn(class'TestEnemy',self,,Location);
+}
+
+function EnemyDied()
+{
+    TimedEnemySpawn();
+}
+
+function freezeEnemy()
+{
+    if(MySpawnedEnemy != none)
+        MySpawnedEnemy.Freeze();
+        
+    ClearTimer('SpawnEnemy');
+}
+
+function TimedEnemySpawn()
+{
+    SetTimer(5.0 + FRand() * 5, false, 'SpawnEnemy');
 }
 
 defaultproperties

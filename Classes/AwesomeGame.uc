@@ -21,8 +21,16 @@ simulated function PostBeginPlay()
 
 function ScoreObjective(PlayerReplicationInfo Scorer, Int Score)
 {
+    local int i;
+
     EnemiesLeft--;
     super.ScoreObjective(Scorer, Score);
+    
+    if(EnemiesLeft == 0)
+    {
+        for(i = 0; i <EnemySpawners.length; i++)
+            EnemySpawners[i].FreezeEnemy();
+    }
 }
 
 function ActivateSpawners()
@@ -30,7 +38,7 @@ function ActivateSpawners()
     local int i;
     
     for(i=0; i < EnemySpawners.length; i++)
-        EnemySpawners[i].SpawnEnemy();
+        EnemySpawners[i].TimedEnemySpawn();
 }
 
 defaultproperties

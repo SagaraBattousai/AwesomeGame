@@ -12,6 +12,16 @@ simulated function PostBeginPlay()
     bNoCrosshair = true;
 }
 
+exec function Upgrade()
+{
+    local float f;
+    f = class'AwesomeWeapon_RocketLauncher'.static.GetDefaultFireRate();
+    `log(f);
+
+    if(Pawn != none && AwesomeWeapon(Pawn.Weapon) != none)
+        AwesomeWeapon(Pawn.Weapon).UpgradeWeapon();
+}
+
 function NotifyChangedWeapon(Weapon PrevWeapon, Weapon NewWeapon)
 {
     super.NotifyChangedWeapon(PrevWeapon, NewWeapon);

@@ -5,6 +5,7 @@ var float BumpDamage;
 var Pawn Enemy;
 var float FollowDistance;
 var float AttackDistance;
+var bool bFreeze;
 
 function Tick(float DeltaTime)
 {
@@ -16,13 +17,10 @@ function Tick(float DeltaTime)
         foreach LocalPlayerControllers(class'AwesomePlayerController', PC)
         {
             if(PC.Pawn != none)
-            {
                 Enemy = PC.Pawn;
-                `log("My Enemy is:" @ Enemy);
-            }
         }
     }
-    else if(VSize(Location - Enemy.Location) < FollowDistance)
+    else if(!bFreeze && VSize(Location - Enemy.Location) < FollowDistance)
     {
         if(Vsize(Location - Enemy.Location) < AttackDistance)
         {
@@ -30,8 +28,8 @@ function Tick(float DeltaTime)
         }
         else
         {
-            NewLocation = location;
-            newLocation += (Enemy.Location - Location) * DeltaTime;
+            NewLocation = Location;
+            NewLocation += (Enemy.Location - Location) * DeltaTime;
             SetLocation(NewLocation);
         }
     }
@@ -44,8 +42,16 @@ event TakeDamage(int DamageAmount, Controller EventInstigator,
     if(EventInstigator != none && EventInstigator.PlayerReplicationInfo != none){
         WorldInfo.Game.ScoreObjective(EventInstigator.PlayerReplicationInfo, 1);
     }
+    
+    if(AwesomeEnemySpawner(Owner) != none)
+        AwesomeEnemySpawner(Owner).EnemyDied();
 
     Destroy();
+}
+
+function Freeze()
+{
+    bFreeze = true;
 }
 
 defaultproperties

@@ -23,6 +23,12 @@ function UpgradeWeapon()
     `log("Current Weapon Level:" @ CurrentWeaponLevel);
 }
 
+
+static function float GetDefaultFireRate()
+{
+    return default.FireRates[0];
+}
+
 defaultproperties
 {
     FireRates(0)=1.5

@@ -1,9 +1,9 @@
 class TestEnemy extends AwesomeActor
     placeable;
-    
+
 var float BumpDamage;
 var Pawn Enemy;
-var float FollowDistance;
+var float MovementSpeed;
 var float AttackDistance;
 var bool bFreeze;
 
@@ -20,7 +20,7 @@ function Tick(float DeltaTime)
                 Enemy = PC.Pawn;
         }
     }
-    else if(!bFreeze && VSize(Location - Enemy.Location) < FollowDistance)
+    else if(!bFreeze)
     {
         if(Vsize(Location - Enemy.Location) < AttackDistance)
         {
@@ -29,7 +29,7 @@ function Tick(float DeltaTime)
         else
         {
             NewLocation = Location;
-            NewLocation += (Enemy.Location - Location) * DeltaTime;
+            NewLocation += normal(Enemy.Location - Location)* MovementSpeed * DeltaTime;
             SetLocation(NewLocation);
         }
     }
@@ -58,7 +58,7 @@ defaultproperties
 {
 
     BumpDamage=5.0
-    FollowDistance=512.0
+    MovementSpeed=256.0
     AttackDistance=96.0
 
     bBlockActors=True

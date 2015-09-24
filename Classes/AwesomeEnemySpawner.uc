@@ -11,20 +11,18 @@ function SpawnEnemy()
 
 function EnemyDied()
 {
-    TimedEnemySpawn();
+    SpawnEnemy();
 }
 
 function freezeEnemy()
 {
     if(MySpawnedEnemy != none)
         MySpawnedEnemy.Freeze();
-        
-    ClearTimer('SpawnEnemy');
 }
 
-function TimedEnemySpawn()
+function bool CanSpawnEnemy()
 {
-    SetTimer(5.0 + FRand() * 5, false, 'SpawnEnemy');
+    return MySpawnedEnemy == none;
 }
 
 defaultproperties

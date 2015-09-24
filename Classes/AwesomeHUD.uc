@@ -23,6 +23,13 @@ event DrawHUD()
         Canvas.SetPos(Canvas.ClipX * 0.1, Canvas.ClipY * 0.95);
         canvas.DrawText("Enemies Killed:" @ AwesomeGame(WorldInfo.Game).GoalScore - AwesomeGame(WorldInfo.Game).EnemiesLeft);
     }
+    
+    if(AwesomeGame(WorldInfo.Game) != none && !AwesomeGame(WorldInfo.Game).bFirstEnemySpawned &&
+        AwesomeGame(WorldInfo.Game).IsTimerActive('ActivateSpawners'))
+        {
+            Canvas.SetPos(Canvas.ClipX * 0.1, Canvas.ClipY * 0.85);
+            Canvas.DrawText("Time Left To First Spawn:" @ AwesomeGame(WorldInfo.Game).GetRemainingTimeForTimer('ActivateSpawners'));
+        }
 }
 
 defaultproperties
